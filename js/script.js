@@ -6,11 +6,13 @@ try {
     .then(response => response.json())
     .then(json =>{
         series = json;
-
+        
+        getIdByLaunchYear()
+     
         // Display
         displaySeries(json);
         displayStyles(getStyles(json));
-
+        
         // Event handlers
         manageClickStyles();
         manageSeriesClick()
@@ -25,7 +27,7 @@ try {
 function displaySeries() {
     const element = document.getElementById("container");
     for(const serie of series) {
-        element.innerHTML += `<li data-id="${serie.id}"><h2>${serie.name}</h2><img class="image" src="${serie.image}"> </li>`;
+        element.innerHTML += `<li data-id="${serie.id}" data-year="${serie.launchYear}"><h2>${serie.name}</h2><img class="image" src="${serie.image}"> </li>`;
     }
 
     // document.getElementById("container").innerHTML = series.map(serie => `<li><h2>${serie.name}</h2><img class="image" src="${serie.image}"> </li>`).join("")
@@ -142,10 +144,10 @@ let favList = [];
 function addSerieToFav(serie){
    if (!favList.includes(serie)) {
      favList.push(serie)
-   } 
-   displayFavList();
+    } 
+displayFavList();
 }
- 
+
 // 16/ Créer une fonction pour ajouter une série en favoris au click.
 
 function manageSeriesClick(){
@@ -161,32 +163,62 @@ function manageSeriesClick(){
 function displayFavList(){
     let html = "";
     favList.forEach(serie => {
-       html += `<li data-id="${serie.id}">${serie.name}</li>` 
+        html += `<li data-id="${serie.id}">${serie.name}</li>` 
     })
     document.getElementById("favoris").innerHTML = html;
+    displayNumberOfFavs();
 }
 
 // 18/ Créer une fonction permettant de retirer une série de la liste des favoris de par son id.
 
 function removeSerieFromFav(id) {
-   favList = favList.filter(serie => serie.id !== parseInt(id));
-   displayFavList();
+    favList = favList.filter(serie => serie.id !== parseInt(id));
+    displayFavList();
 }
 
 // 19/ Créez une fonction qui fasse qu'au clic sur un favoris il se retire de la liste.
 
 function manageFavClick() {
     document.getElementById("favoris").addEventListener("click", function(event){
-        if(event.target.hasAttribute("data-id")) removeSerieFromFav(event.target.dataset.id);    
+        if(event.target.hasAttribute("data-id")) {
+            removeSerieFromFav(event.target.dataset.id);    
+        }
     })
 }
 
-
 // 20/ Créer une fonction qui affiche le nombre de favoris en titre de la liste des favoris.
-
+function displayNumberOfFavs(){
+    document.getElementById("favoris-ttl").innerHTML = `Favoris [${favList.length}]`;
+}
 
 // 21/ Créer une fonction qui retourne les id des séries par ordre d'année de sortie.
+let table = [];
+function getIdByLaunchYear(){
+    let ids = [];
+    series.forEach(serie => {
+        table.push(serie.launchYear)
+        ids.push(serie.id)
+    }); 
+    console.log(table.sort())
+    console.log(ids)
+}
+// utiliser les data-year que j'ai rajouté sur les li mais j'arrivais pas à les cibler dans mon js, sûrement pcq ils ne font pas parti du html et ça m'a saoulé donc je suis parti retaffer sur la géolocalisation
 
+
+// let fills = [];
+// function fill(year){
+//     fills.push(year)
+//     fills.sort()
+//     console.log(fills)
+// }
+
+
+// document.querySelectorAll("#container > li").forEach(li =>{
+//     console.log("hello") 
+//     // fill(li.dataset.year)
+// })
+
+console.log(document.querySelectorAll("[data-year]"));
 
 // 22/ Créer une fonction qui affiche les séries dans la page dans l'ordre des ids passés en paramètre.
 
