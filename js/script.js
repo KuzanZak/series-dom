@@ -1,4 +1,3 @@
-
 // 1/ Récupérer les données en javascript sur les séries présentes dans le fichier datas/series.json.
 let series;
 try {
@@ -6,8 +5,6 @@ try {
     .then(response => response.json())
     .then(json =>{
         series = json;
-        
-        getIdByLaunchYear()
      
         // Display
         displaySeries(json);
@@ -16,7 +13,8 @@ try {
         // Event handlers
         manageClickStyles();
         manageSeriesClick()
-        manageFavClick()
+        manageFavClick()*
+        lise()
     }); 
 } catch (error) {
     console.error("error" + error);
@@ -26,7 +24,7 @@ try {
 
 function displaySeries() {
     const element = document.getElementById("container");
-    for(const serie of series) {
+    for (const serie of series) {
         element.innerHTML += `<li data-id="${serie.id}" data-year="${serie.launchYear}"><h2>${serie.name}</h2><img class="image" src="${serie.image}"> </li>`;
     }
 
@@ -192,17 +190,56 @@ function displayNumberOfFavs(){
 }
 
 // 21/ Créer une fonction qui retourne les id des séries par ordre d'année de sortie.
-let table = [];
-function getIdByLaunchYear(){
-    let ids = [];
-    series.forEach(serie => {
-        table.push(serie.launchYear)
-        ids.push(serie.id)
-    }); 
-    console.log(table.sort())
-    console.log(ids)
+// Récupérer les id
+// Récupérer les années de sortie 
+// Récupérer les id des séries en fonction des années de sortie
+
+// let table = [];
+// function getIdFromYear(year){
+//     // table.push(year);
+//     // table.sort()
+    
+//     // console.log(table)
+//     // let id; 
+//     // series.forEach(serie => {
+//     //     if (serie.launchYear === parseInt(year)){
+//     //         id = serie.id
+//     //     } 
+//     // }) 
+//     // return id; 
+//     // return series.filter(serie => serie.launchYear).map(serie => serie.id)
+// }
+
+function lise(){
+    document.querySelectorAll("#container > li").forEach(li =>{
+    //   console.log(li.dataset.year);
+      let ids = []; 
+      series.forEach(serie => {
+        if (serie.launchYear === parseInt(li.dataset.year)) {
+            
+            console.log(li.dataset.id)
+        }
+      })
+    });
 }
-// utiliser les data-year que j'ai rajouté sur les li mais j'arrivais pas à les cibler dans mon js, sûrement pcq ils ne font pas parti du html et ça m'a saoulé donc je suis parti retaffer sur la géolocalisation
+
+// function getIdFromStyle(style){
+//     return series.filter(serie => serie.styles.includes(style)).map(serie => serie.id);
+// }
+
+
+
+
+// let table = [];
+// function getIdByLaunchYear(){
+//     let ids = [];
+//     series.forEach(serie => {
+//         table.push(serie.launchYear)
+//         ids.push(serie.id)
+//     }); 
+//     console.log(table.sort())
+//     console.log(ids)
+// }
 
 
 // let fills = [];
@@ -218,7 +255,7 @@ function getIdByLaunchYear(){
 //     // fill(li.dataset.year)
 // })
 
-console.log(document.querySelectorAll("[data-year]"));
+// console.log(document.querySelectorAll("[data-year]"));
 
 // 22/ Créer une fonction qui affiche les séries dans la page dans l'ordre des ids passés en paramètre.
 
